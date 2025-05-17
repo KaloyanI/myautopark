@@ -1,0 +1,106 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+class Car extends Model
+{
+    use HasFactory;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'brand',
+        'model',
+        'year',
+        'license_plate',
+        'color',
+        'mileage',
+        'status',
+        'daily_rate',
+        'description',
+        'specifications',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'specifications' => 'array',
+        'mileage' => 'decimal:2',
+        'daily_rate' => 'decimal:2',
+        'year' => 'integer',
+    ];
+
+    /**
+     * Status constants
+     */
+    public const STATUS_AVAILABLE = 'available';
+    public const STATUS_BOOKED = 'booked';
+    public const STATUS_MAINTENANCE = 'maintenance';
+
+    /**
+     * Get the validation rules for car creation/update
+     *
+     * @return array<string, mixed>
+     */
+    public static function validationRules(): array
+    {
+        return [
+            'brand' => 'required|string|max:255',
+            'model' => 'required|string|max:255',
+            'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
+            'license_plate' => 'required|string|max:20|unique:cars,license_plate',
+            'color' => 'required|string|max:50',
+            'mileage' => 'required|numeric|min:0',
+            'status' => 'required|in:available,booked,maintenance',
+            'daily_rate' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
+            'specifications' => 'nullable|json',
+        ];
+    }
+
+    /**
+     * Get the bookings for the car.
+     */
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    /**
+     * Get the maintenance records for the car.
+     */
+    public function maintenanceRecords(): HasMany
+    {
+        return $this->hasMany(Maintenance::class);
+    }
+
+    /**
+     * Check if the car is available for booking
+     *
+     * @return bool
+     */
+    public function isAvailable(): bool
+    {
+        return $this->status === self::STATUS_AVAILABLE;
+    }
+
+    /**
+     * Get the full name of the car (brand and model)
+     *
+     * @return string
+     */
+    public function getFullNameAttribute(): string
+    {
+        return "{$this->brand} {$this->model} ({$this->year})";
+    }
+}
