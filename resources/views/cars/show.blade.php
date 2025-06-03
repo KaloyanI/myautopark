@@ -54,6 +54,11 @@
                             </div>
                             
                             <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('Owner') }}</h4>
+                                <p>{{ $car->owner->name }}</p>
+                            </div>
+                            
+                            <div class="mb-4">
                                 <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('VIN') }}</h4>
                                 <p>{{ $car->vin }}</p>
                             </div>

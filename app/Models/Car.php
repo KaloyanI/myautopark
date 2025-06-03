@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Car extends Model
 {
@@ -16,6 +17,7 @@ class Car extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'owner_id',
         'brand',
         'model',
         'year',
@@ -193,5 +195,13 @@ class Car extends Model
             return null;
         }
         return asset('storage/' . $this->photo);
+    }
+
+    /**
+     * Get the owner of the car.
+     */
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'owner_id');
     }
 }

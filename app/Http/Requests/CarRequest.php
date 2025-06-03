@@ -25,6 +25,7 @@ class CarRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
+            'owner_id' => 'sometimes|exists:users,id',
             'brand' => 'required|string|max:255',
             'model' => 'required|string|max:255',
             'year' => ['required', 'integer', 'min:1900', 'max:' . (date('Y') + 1)],

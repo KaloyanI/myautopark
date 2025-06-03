@@ -99,15 +99,16 @@ class CarController extends Controller
         
         // Handle photo upload
         if ($request->hasFile('photo')) {
-            $data['photo'] = FileHelper::uploadFile($request->file('photo'));
+            $data['photo'] = FileHelper::uploadFile($request->file('photo'), 'cars');
         }
+        
+        // Set the owner to the currently authenticated user
+        $data['owner_id'] = auth()->id();
         
         $car = Car::create($data);
         
         if ($request->expectsJson()) {
-            return (new CarResource($car))
-                ->response()
-                ->setStatusCode(201);
+            return (new CarResource($car))->response();
         }
         
         return redirect()

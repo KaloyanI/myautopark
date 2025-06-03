@@ -140,6 +140,7 @@
                                                         @endif
                                                     </a>
                                                 </th>
+                                                <th class="py-3 px-6">{{ __('Owner') }}</th>
                                                 <th class="py-3 px-6">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'daily_rate', 'direction' => request('sort') == 'daily_rate' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Daily Rate') }}
@@ -180,6 +181,7 @@
                                                     <td class="py-4 px-6">{{ $car->brand }}</td>
                                                     <td class="py-4 px-6">{{ $car->model }}</td>
                                                     <td class="py-4 px-6">{{ $car->year }}</td>
+                                                    <td class="py-4 px-6">{{ $car->owner->name }}</td>
                                                     <td class="py-4 px-6">${{ number_format($car->daily_rate, 2) }}</td>
                                                     <td class="py-4 px-6">
                                                         <span class="sketchy px-2 py-1 rounded text-xs font-medium
@@ -217,7 +219,7 @@
                                 <!-- Grid Layout -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                     @foreach($cars as $car)
-                                        <div class="sketchy-card bg-white dark:bg-gray-700 overflow-hidden">
+                                        <div class="sketchy-card bg-white dark:bg-gray-700 overflow-visible">
                                             <div class="relative h-48 rounded overflow-hidden">
                                                 @if($car->photo_url)
                                                     <img src="{{ $car->photo_url }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-full h-full object-cover">
@@ -236,34 +238,55 @@
                                                     {{ ucfirst($car->status) }}
                                                 </span>
                                             </div>
-                                            <div class="p-4">
+                                            <div class="p-4 overflow-visible">
                                                 <h3 class="text-lg font-semibold mb-2">{{ $car->brand }} {{ $car->model }}</h3>
                                                 <div class="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                                                     <p>{{ __('Year') }}: {{ $car->year }}</p>
                                                     <p>{{ __('Daily Rate') }}: ${{ number_format($car->daily_rate, 2) }}</p>
                                                 </div>
-                                                <div class="mt-4 space-y-2">
-                                                    <!-- First row of buttons -->
-                                                    <div class="flex space-x-2">
-                                                        <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 text-sm flex-1 text-center">
-                                                            {{ __('View') }}
-                                                        </a>
-                                                        <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500 text-sm flex-1 text-center">
-                                                            {{ __('Add Expense') }}
-                                                        </a>
-                                                    </div>
-                                                    <!-- Second row of buttons -->
-                                                    <div class="flex space-x-2">
-                                                        <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500 text-sm flex-1 text-center">
-                                                            {{ __('Edit') }}
-                                                        </a>
-                                                        <form action="{{ route('cars.destroy', $car) }}" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this car?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="sketchy-button bg-red-600 text-white hover:bg-red-500 text-sm w-full">
-                                                                {{ __('Delete') }}
-                                                            </button>
-                                                        </form>
+                                                <div class="mt-4 flex items-center justify-between space-x-2">
+                                                    <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 text-sm flex-grow text-center">
+                                                        {{ __('View') }}
+                                                    </a>
+                                                    <div class="relative" x-data="{ isOpen: false }">
+                                                        <button @click="isOpen = !isOpen" type="button" class="sketchy-button bg-gray-600 text-white hover:bg-gray-500 text-sm px-3">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                                            </svg>
+                                                        </button>
+                                                        <!-- Dropdown menu -->
+                                                        <div x-show="isOpen" 
+                                                             @click.away="isOpen = false"
+                                                             x-cloak
+                                                             class="absolute right-0 w-48 rounded-md shadow-lg bg-white dark:bg-gray-700 ring-1 ring-black ring-opacity-5 sketchy z-[9999] overflow-hidden"
+                                                             style="display: none; margin-top: 0.5rem; transform: translateY(0);"
+                                                             x-transition:enter="transition ease-out duration-100"
+                                                             x-transition:enter-start="transform opacity-0 scale-95"
+                                                             x-transition:enter-end="transform opacity-100 scale-100"
+                                                             x-transition:leave="transition ease-in duration-75"
+                                                             x-transition:leave-start="transform opacity-100 scale-100"
+                                                             x-transition:leave-end="transform opacity-0 scale-95">
+                                                            <div class="py-1 bg-white dark:bg-gray-700">
+                                                                <a href="{{ route('cars.expenses.create', $car) }}" 
+                                                                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                                    {{ __('Add Expense') }}
+                                                                </a>
+                                                                <a href="{{ route('cars.edit', $car) }}" 
+                                                                   class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                                    {{ __('Edit') }}
+                                                                </a>
+                                                                <form action="{{ route('cars.destroy', $car) }}" 
+                                                                      method="POST" 
+                                                                      onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <button type="submit" 
+                                                                            class="block w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-600">
+                                                                        {{ __('Delete') }}
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
