@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,11 @@ Route::middleware('auth')->group(function () {
     // Custom car routes
     Route::get('cars/{car}/availability', [CarController::class, 'checkAvailability'])->name('cars.availability');
     Route::get('api/cars/available', [CarController::class, 'getAvailableCars'])->name('api.cars.available');
+
+    Route::post('/layout-preference', function (Request $request) {
+        \App\Helpers\LayoutHelper::setLayoutPreference($request->view, $request->layout);
+        return back();
+    })->name('layout.toggle');
 });
 
 require __DIR__.'/auth.php';

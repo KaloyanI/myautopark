@@ -32,8 +32,8 @@
                                 <div class="md:col-span-3 mb-4">
                                     <label for="photo" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ __('Car Photo') }}</label>
                                     @if($car->photo_url)
-                                        <div class="mb-2">
-                                            <img src="{{ asset($car->photo_url) }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-48 h-48 object-cover rounded-lg sketchy">
+                                        <div class="mb-4">
+                                            <img src="{{ asset($car->photo_url) }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-48 h-48 object-cover rounded sketchy">
                                         </div>
                                     @endif
                                     <input type="file" id="photo" name="photo" accept="image/*" class="sketchy-input mt-1 block w-full @error('photo') border-red-500 @enderror">

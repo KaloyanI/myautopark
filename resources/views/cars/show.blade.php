@@ -32,7 +32,7 @@
                         <!-- Car Photo -->
                         @if($car->photo_url)
                             <div class="md:col-span-2 mb-6">
-                                <img src="{{ asset($car->photo_url) }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-full max-w-2xl h-auto object-cover rounded-lg sketchy mx-auto">
+                                <img src="{{ asset($car->photo_url) }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-full max-w-2xl h-auto object-cover rounded sketchy mx-auto">
                             </div>
                         @endif
                         
