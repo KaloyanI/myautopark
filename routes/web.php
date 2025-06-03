@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarController;
+use App\Http\Controllers\CarExpenseController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -29,6 +30,16 @@ Route::middleware('auth')->group(function () {
         \App\Helpers\LayoutHelper::setLayoutPreference($request->view, $request->layout);
         return back();
     })->name('layout.toggle');
+
+    // Car Expenses Routes
+    Route::get('/cars/{car}/expenses', [CarExpenseController::class, 'index'])->name('cars.expenses.index');
+    Route::get('/cars/{car}/expenses/create', [CarExpenseController::class, 'create'])->name('cars.expenses.create');
+    Route::post('/cars/{car}/expenses', [CarExpenseController::class, 'store'])->name('cars.expenses.store');
+    Route::get('/cars/{car}/expenses/{expense}', [CarExpenseController::class, 'show'])->name('cars.expenses.show');
+    Route::get('/cars/{car}/expenses/{expense}/edit', [CarExpenseController::class, 'edit'])->name('cars.expenses.edit');
+    Route::put('/cars/{car}/expenses/{expense}', [CarExpenseController::class, 'update'])->name('cars.expenses.update');
+    Route::delete('/cars/{car}/expenses/{expense}', [CarExpenseController::class, 'destroy'])->name('cars.expenses.destroy');
+    Route::get('/cars/{car}/expenses/{expense}/documents/{index}', [CarExpenseController::class, 'downloadDocument'])->name('cars.expenses.document.download');
 });
 
 require __DIR__.'/auth.php';

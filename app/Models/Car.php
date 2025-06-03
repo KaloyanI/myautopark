@@ -120,6 +120,49 @@ class Car extends Model
     }
 
     /**
+     * Get the expenses for the car.
+     */
+    public function expenses(): HasMany
+    {
+        return $this->hasMany(CarExpense::class);
+    }
+
+    /**
+     * Get the total expenses amount for a specific type.
+     */
+    public function getTotalExpensesByType(string $type): float
+    {
+        return $this->expenses()
+            ->where('expense_type', $type)
+            ->where('payment_status', CarExpense::STATUS_PAID)
+            ->sum('amount');
+    }
+
+    /**
+     * Get all pending expenses.
+     */
+    public function getPendingExpenses()
+    {
+        return $this->expenses()
+            ->where('payment_status', CarExpense::STATUS_PENDING)
+            ->orderBy('due_date')
+            ->get();
+    }
+
+    /**
+     * Get all expenses expiring soon (within 30 days).
+     */
+    public function getExpiringSoonExpenses()
+    {
+        return $this->expenses()
+            ->whereNotNull('expiry_date')
+            ->where('expiry_date', '>', now())
+            ->where('expiry_date', '<=', now()->addDays(30))
+            ->orderBy('expiry_date')
+            ->get();
+    }
+
+    /**
      * Check if the car is available for booking
      *
      * @return bool

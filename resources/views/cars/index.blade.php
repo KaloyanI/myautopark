@@ -194,6 +194,9 @@
                                                         <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500">
                                                             {{ __('View') }}
                                                         </a>
+                                                        <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500">
+                                                            {{ __('Add Expense') }}
+                                                        </a>
                                                         <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500">
                                                             {{ __('Edit') }}
                                                         </a>
@@ -239,20 +242,29 @@
                                                     <p>{{ __('Year') }}: {{ $car->year }}</p>
                                                     <p>{{ __('Daily Rate') }}: ${{ number_format($car->daily_rate, 2) }}</p>
                                                 </div>
-                                                <div class="mt-4 flex space-x-2">
-                                                    <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 text-sm flex-1 text-center">
-                                                        {{ __('View') }}
-                                                    </a>
-                                                    <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500 text-sm flex-1 text-center">
-                                                        {{ __('Edit') }}
-                                                    </a>
-                                                    <form action="{{ route('cars.destroy', $car) }}" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this car?');">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="sketchy-button bg-red-600 text-white hover:bg-red-500 text-sm w-full">
-                                                            {{ __('Delete') }}
-                                                        </button>
-                                                    </form>
+                                                <div class="mt-4 space-y-2">
+                                                    <!-- First row of buttons -->
+                                                    <div class="flex space-x-2">
+                                                        <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 text-sm flex-1 text-center">
+                                                            {{ __('View') }}
+                                                        </a>
+                                                        <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500 text-sm flex-1 text-center">
+                                                            {{ __('Add Expense') }}
+                                                        </a>
+                                                    </div>
+                                                    <!-- Second row of buttons -->
+                                                    <div class="flex space-x-2">
+                                                        <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500 text-sm flex-1 text-center">
+                                                            {{ __('Edit') }}
+                                                        </a>
+                                                        <form action="{{ route('cars.destroy', $car) }}" method="POST" class="flex-1" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="sketchy-button bg-red-600 text-white hover:bg-red-500 text-sm w-full">
+                                                                {{ __('Delete') }}
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
