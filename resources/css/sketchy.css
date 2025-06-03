@@ -1,0 +1,146 @@
+/* Sketchy Hand-drawn Styles */
+
+/* Base sketchy class */
+.sketchy {
+    position: relative;
+    border: 3px solid #333;
+    border-radius: 2% 6% 5% 4% / 1% 1% 2% 4%;
+    background: #ffffff;
+    position: relative;
+    
+    &::before {
+        content: '';
+        border: 2px solid #353535;
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate3d(-50%, -50%, 0) scale(1.015) rotate(0.5deg);
+        border-radius: 1% 1% 2% 4% / 2% 6% 5% 4%;
+        pointer-events: none;
+        z-index: -1;
+    }
+}
+
+/* Sketchy table styles */
+.sketchy-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    margin: 25px 0;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    position: relative;
+    z-index: 1;
+}
+
+.sketchy-table th,
+.sketchy-table td {
+    border: 2px solid #333;
+    padding: 15px;
+    position: relative;
+    background: #fff;
+    transform: rotate(-0.2deg);
+}
+
+.sketchy-table th {
+    background: #f6f6f6;
+    font-weight: bold;
+    transform: rotate(0.2deg);
+}
+
+.sketchy-table tr:hover td {
+    background: #f9f9f9;
+}
+
+/* Sketchy card styles */
+.sketchy-card {
+    padding: 20px;
+    margin: 15px;
+    background: #fff;
+    position: relative;
+    border: 3px solid #333;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.sketchy-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Sketchy button styles */
+.sketchy-button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid #333;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    font-size: 1.1em;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    text-decoration: none;
+    color: inherit;
+    background: #fff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    z-index: 2;
+    
+    &:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    &:active {
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+}
+
+/* Sketchy input styles */
+.sketchy-input {
+    border: 2px solid #333;
+    border-radius: 255px 15px 225px 15px/15px 225px 15px 255px;
+    padding: 8px 15px;
+    font-family: 'Comic Sans MS', cursive, sans-serif;
+    font-size: 1em;
+    outline: none;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    
+    &:focus {
+        border-color: #666;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+    }
+}
+
+/* Sketchy divider */
+.sketchy-divider {
+    height: 3px;
+    background: repeating-linear-gradient(
+        45deg,
+        #333,
+        #333 10px,
+        transparent 10px,
+        transparent 20px
+    );
+    margin: 20px 0;
+    border: none;
+    opacity: 0.7;
+}
+
+/* Animation for loading states */
+@keyframes sketch {
+    0% { transform: translate(-2px, 2px) rotate(0deg); }
+    25% { transform: translate(2px, 2px) rotate(0.5deg); }
+    50% { transform: translate(2px, -2px) rotate(0deg); }
+    75% { transform: translate(-2px, -2px) rotate(-0.5deg); }
+    100% { transform: translate(-2px, 2px) rotate(0deg); }
+}
+
+.sketchy-loading {
+    animation: sketch 1s infinite;
+} 

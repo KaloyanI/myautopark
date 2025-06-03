@@ -20,12 +20,17 @@ class Car extends Model
         'model',
         'year',
         'license_plate',
+        'vin',
         'color',
         'mileage',
+        'fuel_type',
+        'transmission',
+        'seats',
         'status',
         'daily_rate',
         'description',
         'specifications',
+        'photo',
     ];
 
     /**
@@ -38,6 +43,16 @@ class Car extends Model
         'mileage' => 'decimal:2',
         'daily_rate' => 'decimal:2',
         'year' => 'integer',
+        'seats' => 'integer',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = [
+        'photo_url',
     ];
 
     /**
@@ -46,6 +61,21 @@ class Car extends Model
     public const STATUS_AVAILABLE = 'available';
     public const STATUS_BOOKED = 'booked';
     public const STATUS_MAINTENANCE = 'maintenance';
+
+    /**
+     * Fuel type constants
+     */
+    public const FUEL_TYPE_GASOLINE = 'gasoline';
+    public const FUEL_TYPE_DIESEL = 'diesel';
+    public const FUEL_TYPE_ELECTRIC = 'electric';
+    public const FUEL_TYPE_HYBRID = 'hybrid';
+
+    /**
+     * Transmission constants
+     */
+    public const TRANSMISSION_AUTOMATIC = 'automatic';
+    public const TRANSMISSION_MANUAL = 'manual';
+    public const TRANSMISSION_SEMI_AUTO = 'semi-automatic';
 
     /**
      * Get the validation rules for car creation/update
@@ -59,12 +89,17 @@ class Car extends Model
             'model' => 'required|string|max:255',
             'year' => 'required|integer|min:1900|max:' . (date('Y') + 1),
             'license_plate' => 'required|string|max:20|unique:cars,license_plate',
+            'vin' => 'required|string|max:17',
             'color' => 'required|string|max:50',
             'mileage' => 'required|numeric|min:0',
+            'fuel_type' => 'required|string|in:gasoline,diesel,electric,hybrid',
+            'transmission' => 'required|string|in:automatic,manual,semi-automatic',
+            'seats' => 'required|integer|min:1|max:20',
             'status' => 'required|in:available,booked,maintenance',
             'daily_rate' => 'required|numeric|min:0',
             'description' => 'nullable|string',
             'specifications' => 'nullable|json',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -102,5 +137,18 @@ class Car extends Model
     public function getFullNameAttribute(): string
     {
         return "{$this->brand} {$this->model} ({$this->year})";
+    }
+
+    /**
+     * Get the URL for the car's photo.
+     *
+     * @return string|null
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if (!$this->photo) {
+            return null;
+        }
+        return asset('storage/' . $this->photo);
     }
 }

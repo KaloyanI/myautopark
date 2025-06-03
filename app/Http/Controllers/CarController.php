@@ -6,12 +6,14 @@ use App\Http\Requests\CarRequest;
 use App\Http\Resources\CarResource;
 use App\Models\Booking;
 use App\Models\Car;
+use App\Helpers\FileHelper;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class CarController extends Controller
@@ -93,7 +95,14 @@ class CarController extends Controller
      */
     public function store(CarRequest $request)
     {
-        $car = Car::create($request->validated());
+        $data = $request->validated();
+        
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $data['photo'] = FileHelper::uploadFile($request->file('photo'));
+        }
+        
+        $car = Car::create($data);
         
         if ($request->expectsJson()) {
             return (new CarResource($car))
@@ -152,7 +161,14 @@ class CarController extends Controller
      */
     public function update(CarRequest $request, Car $car)
     {
-        $car->update($request->validated());
+        $data = $request->validated();
+        
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            $data['photo'] = FileHelper::uploadFile($request->file('photo'), 'cars', $car->photo);
+        }
+        
+        $car->update($data);
         
         if ($request->expectsJson()) {
             return (new CarResource($car))->response();
@@ -185,6 +201,11 @@ class CarController extends Controller
             }
             
             return back()->with('error', $message);
+        }
+        
+        // Delete the photo if it exists
+        if ($car->photo) {
+            FileHelper::deleteFile($car->photo);
         }
         
         $car->delete();
