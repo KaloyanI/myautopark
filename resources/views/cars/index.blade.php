@@ -105,12 +105,12 @@
                         @if($cars->count() > 0)
                             @if(\App\Helpers\LayoutHelper::getLayoutPreference('cars.index') === 'table')
                                 <!-- Table Layout -->
-                                <div class="overflow-x-auto">
-                                    <table class="sketchy-table w-full">
+                                <div class="overflow-x-auto relative max-w-full">
+                                    <table class="sketchy-table w-full table-fixed min-w-max">
                                         <thead>
-                                            <tr>
-                                                <th class="py-3 px-6">{{ __('Photo') }}</th>
-                                                <th class="py-3 px-6">
+                                            <tr class="whitespace-nowrap text-left h-16">
+                                                <th class="py-3 px-6 w-24 truncate align-middle">{{ __('Photo') }}</th>
+                                                <th class="py-3 px-6 w-32 truncate align-middle">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'brand', 'direction' => request('sort') == 'brand' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Brand') }}
                                                         @if(request('sort') == 'brand')
@@ -120,7 +120,7 @@
                                                         @endif
                                                     </a>
                                                 </th>
-                                                <th class="py-3 px-6">
+                                                <th class="py-3 px-6 w-32 truncate align-middle">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'model', 'direction' => request('sort') == 'model' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Model') }}
                                                         @if(request('sort') == 'model')
@@ -130,7 +130,7 @@
                                                         @endif
                                                     </a>
                                                 </th>
-                                                <th class="py-3 px-6">
+                                                <th class="py-3 px-6 w-24 truncate align-middle">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'year', 'direction' => request('sort') == 'year' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Year') }}
                                                         @if(request('sort') == 'year')
@@ -140,8 +140,8 @@
                                                         @endif
                                                     </a>
                                                 </th>
-                                                <th class="py-3 px-6">{{ __('Owner') }}</th>
-                                                <th class="py-3 px-6">
+                                                <th class="py-3 px-6 w-32 truncate align-middle">{{ __('Owner') }}</th>
+                                                <th class="py-3 px-6 w-24 truncate align-middle">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'daily_rate', 'direction' => request('sort') == 'daily_rate' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Daily Rate') }}
                                                         @if(request('sort') == 'daily_rate')
@@ -151,7 +151,7 @@
                                                         @endif
                                                     </a>
                                                 </th>
-                                                <th class="py-3 px-6">
+                                                <th class="py-3 px-6 w-24 truncate align-middle">
                                                     <a href="{{ route('cars.index', array_merge(request()->query(), ['sort' => 'status', 'direction' => request('sort') == 'status' && request('direction') == 'asc' ? 'desc' : 'asc'])) }}" class="flex items-center">
                                                         {{ __('Status') }}
                                                         @if(request('sort') == 'status')
@@ -161,13 +161,13 @@
                                                         @endif
                                                     </a>
                                                 </th>
-                                                <th class="py-3 px-6">{{ __('Actions') }}</th>
+                                                <th class="py-3 px-6 w-24 truncate align-middle">{{ __('Actions') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($cars as $car)
-                                                <tr>
-                                                    <td class="py-4 px-6">
+                                                <tr class="whitespace-nowrap h-20">
+                                                    <td class="py-4 px-6 w-24 truncate align-middle">
                                                         @if($car->photo_url)
                                                             <img src="{{ $car->photo_url }}" alt="{{ $car->brand }} {{ $car->model }}" class="w-16 h-16 object-cover rounded sketchy border-0">
                                                         @else
@@ -178,13 +178,13 @@
                                                             </div>
                                                         @endif
                                                     </td>
-                                                    <td class="py-4 px-6">{{ $car->brand }}</td>
-                                                    <td class="py-4 px-6">{{ $car->model }}</td>
-                                                    <td class="py-4 px-6">{{ $car->year }}</td>
-                                                    <td class="py-4 px-6">{{ $car->owner->name }}</td>
-                                                    <td class="py-4 px-6">${{ number_format($car->daily_rate, 2) }}</td>
-                                                    <td class="py-4 px-6">
-                                                        <span class="sketchy px-2 py-1 rounded text-xs font-medium
+                                                    <td class="py-4 px-6 w-32 truncate align-middle">{{ $car->brand }}</td>
+                                                    <td class="py-4 px-6 w-32 truncate align-middle">{{ $car->model }}</td>
+                                                    <td class="py-4 px-6 w-24 truncate align-middle">{{ $car->year }}</td>
+                                                    <td class="py-4 px-6 w-32 truncate align-middle">{{ $car->owner->name }}</td>
+                                                    <td class="py-4 px-6 w-24 truncate align-middle">${{ number_format($car->daily_rate, 2) }}</td>
+                                                    <td class="py-4 px-6 w-24 truncate align-middle">
+                                                        <span class="inline-flex sketchy px-2 py-1 rounded text-xs font-medium truncate
                                                             @if($car->status == 'available') bg-green-100 text-green-800 
                                                             @elseif($car->status == 'maintenance') bg-orange-100 text-orange-800 
                                                             @elseif($car->status == 'reserved') bg-blue-100 text-blue-800 
@@ -192,23 +192,25 @@
                                                             {{ ucfirst($car->status) }}
                                                         </span>
                                                     </td>
-                                                    <td class="py-4 px-6 space-x-2">
-                                                        <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500">
-                                                            {{ __('View') }}
-                                                        </a>
-                                                        <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500">
-                                                            {{ __('Add Expense') }}
-                                                        </a>
-                                                        <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500">
-                                                            {{ __('Edit') }}
-                                                        </a>
-                                                        <form action="{{ route('cars.destroy', $car) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this car?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="sketchy-button bg-red-600 text-white hover:bg-red-500">
-                                                                {{ __('Delete') }}
-                                                            </button>
-                                                        </form>
+                                                    <td class="py-4 px-6 align-middle">
+                                                        <div class="flex items-center space-x-2 min-w-[300px]">
+                                                            <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 truncate">
+                                                                {{ __('View') }}
+                                                            </a>
+                                                            <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500 truncate">
+                                                                {{ __('Add Expense') }}
+                                                            </a>
+                                                            <a href="{{ route('cars.edit', $car) }}" class="sketchy-button bg-yellow-600 text-white hover:bg-yellow-500 truncate">
+                                                                {{ __('Edit') }}
+                                                            </a>
+                                                            <form action="{{ route('cars.destroy', $car) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="sketchy-button bg-red-600 text-white hover:bg-red-500 truncate">
+                                                                    {{ __('Delete') }}
+                                                                </button>
+                                                            </form>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             @endforeach
