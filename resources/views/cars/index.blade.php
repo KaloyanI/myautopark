@@ -194,8 +194,11 @@
                                                     </td>
                                                     <td class="py-4 px-6 align-middle">
                                                         <div class="flex items-center space-x-2 min-w-[300px]">
-                                                            <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 truncate">
+                                                            <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 whitespace-nowrap">
                                                                 {{ __('View') }}
+                                                            </a>
+                                                            <a href="{{ route('cars.metrics.index', $car) }}" class="sketchy-button bg-indigo-600 text-white hover:bg-indigo-500 whitespace-nowrap">
+                                                                {{ __('Metrics') }}
                                                             </a>
                                                             <a href="{{ route('cars.expenses.create', $car) }}" class="sketchy-button bg-green-600 text-white hover:bg-green-500 truncate">
                                                                 {{ __('Add Expense') }}
@@ -249,6 +252,9 @@
                                                 <div class="mt-4 flex items-center justify-between space-x-2">
                                                     <a href="{{ route('cars.show', $car) }}" class="sketchy-button bg-blue-600 text-white hover:bg-blue-500 text-sm flex-grow text-center">
                                                         {{ __('View') }}
+                                                    </a>
+                                                    <a href="{{ route('cars.metrics.index', $car) }}" class="sketchy-button bg-indigo-600 text-white hover:bg-indigo-500 text-sm flex-grow text-center">
+                                                        {{ __('Metrics') }}
                                                     </a>
                                                     <div class="relative" x-data="{ isOpen: false }">
                                                         <button @click="isOpen = !isOpen" type="button" class="sketchy-button bg-gray-600 text-white hover:bg-gray-500 text-sm px-3">

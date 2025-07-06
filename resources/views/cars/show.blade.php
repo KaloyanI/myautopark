@@ -106,6 +106,13 @@
                                     {{ __('View All Expenses') }}
                                 </a>
                             </div>
+
+                            <div class="mb-4">
+                                <h4 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{{ __('Vehicle Metrics') }}</h4>
+                                <a href="{{ route('cars.metrics.index', $car) }}" class="text-blue-600 hover:text-blue-500">
+                                    {{ __('View Metrics & Analytics') }}
+                                </a>
+                            </div>
                         </div>
                     </div>
                     

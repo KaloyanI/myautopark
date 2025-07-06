@@ -204,4 +204,26 @@ class Car extends Model
     {
         return $this->belongsTo(User::class, 'owner_id');
     }
+
+    public function metrics(): HasMany
+    {
+        return $this->hasMany(VehicleMetric::class);
+    }
+
+    public function getLatestMetric(): ?VehicleMetric
+    {
+        return $this->metrics()->latest('reading_date')->first();
+    }
+
+    public function getAverageFuelEfficiency(): float
+    {
+        return $this->metrics()
+            ->whereNotNull('fuel_efficiency')
+            ->avg('fuel_efficiency') ?? 0.0;
+    }
+
+    public function getTotalFuelCost(): float
+    {
+        return $this->metrics()->sum('fuel_cost') ?? 0.0;
+    }
 }

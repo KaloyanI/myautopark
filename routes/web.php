@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CarController;
 use App\Http\Controllers\CarExpenseController;
+use App\Http\Controllers\VehicleMetricsController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,11 @@ Route::middleware('auth')->group(function () {
     Route::put('/cars/{car}/expenses/{expense}', [CarExpenseController::class, 'update'])->name('cars.expenses.update');
     Route::delete('/cars/{car}/expenses/{expense}', [CarExpenseController::class, 'destroy'])->name('cars.expenses.destroy');
     Route::get('/cars/{car}/expenses/{expense}/documents/{index}', [CarExpenseController::class, 'downloadDocument'])->name('cars.expenses.document.download');
+
+    // Vehicle Metrics Routes
+    Route::resource('cars.metrics', VehicleMetricsController::class)
+        ->middleware(['auth'])
+        ->except(['show']);
 });
 
 require __DIR__.'/auth.php';
